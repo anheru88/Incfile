@@ -13,6 +13,8 @@ class DispatchPost implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 5;
+
     /**
      * Create a new job instance.
      *
@@ -34,13 +36,12 @@ class DispatchPost implements ShouldQueue
 
         $user = json_decode(json_encode(factory(User::class)->make()), true);
 
-/*        $request = $client->get(env('POST_URL'), [
+       $request = $client->get(env('POST_URL'), [
             'user' => $user
         ]);
 
-        if ($request->getStatusCode() == 200) {
-
+        if ($request->getStatusCode() != 200) {
+            throw new UncreatedProductException("Uncreated Product");
         }
-*/
     }
 }
